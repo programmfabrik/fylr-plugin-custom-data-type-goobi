@@ -6,8 +6,8 @@ plugin:
     de-DE: Goobi-Verknüpfung
     en-US: Goobi-Referencing
   info:
-    de-DE: Stellt Verknüpfungen mit den Normdaten der Library of Congress her.
-    en-US: Use for references to authority data of the Library of Congress.
+    de-DE: Stellt Verknüpfungen mit Datensätzen aus goobi-Production her.
+    en-US: Provides links to the records from goobi-production.
   l10n: l10n/customDataTypeGoobi.csv
   webfrontend:
     url: customDataTypeGoobi.js
