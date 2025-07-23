@@ -1,0 +1,99 @@
+plugin:
+  name: custom-data-type-goobi
+  version: 2.0
+  url: https://github.com/programmfabrik/fylr-plugin-custom-data-type-goobi
+  displayname:
+    de-DE: Goobi-Verknüpfung
+    en-US: Goobi-Referencing
+  info:
+    de-DE: Stellt Verknüpfungen mit den Normdaten der Library of Congress her.
+    en-US: Use for references to authority data of the Library of Congress.
+  l10n: l10n/customDataTypeGoobi.csv
+  webfrontend:
+    url: customDataTypeGoobi.js
+    css: customDataTypeGoobi.css
+    dependencies:
+      - commons-library
+    
+base_url_prefix: "webfrontend"
+
+custom_types:
+  goobi:
+    mapping:
+      conceptName:
+        type: text
+      conceptURI:
+        type: text
+    config:
+      schema:
+        - name: safeAsConceptName
+          parameters:
+            value:
+              type: text
+        - name: safeAsConceptURI
+          parameters:
+            value:
+              type: text
+      mask:
+        - name: goobi_api_url
+          parameters:
+            value:
+              type: text
+        - name: goobi_endpoint_token
+          parameters:
+            value:
+              type: text
+        - name: projects
+          parameters:
+            value:
+              type: text
+        - name: searchfields
+          parameters:
+            value:
+              type: text
+        - name: editor_display
+          parameters:
+            value:
+              type: select
+              options: ["default", "condensed"]
+
+    update:
+      plugin_user:
+        reference: system:root
+      exec:
+        service: "node"
+        commands:
+          - prog: "node"
+            stdin:
+              type: body
+            stdout:
+              type: body
+            args:
+              - type: "value"
+                value: "%_exec.pluginDir%/updater/GoobiUpdater.js"
+              - type: "value"
+                value: "%info.json%"
+      timeout: 60
+      batch_size: 1
+      expires_days: 1
+
+base_config:
+  - name: update_goobi
+    group: update_custom_data_type
+    parameters:
+      restrict_time:
+        type: bool
+        default: false
+        position: 0
+      from_time:
+        type: int
+        default: 19
+        min: 0
+        max: 24
+        position: 1
+      to_time:
+        type: int
+        default: 4
+        min: 0
+        max: 24
+        position: 2 
