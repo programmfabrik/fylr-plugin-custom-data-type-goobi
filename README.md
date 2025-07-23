@@ -11,6 +11,17 @@ This is a plugin for [fylr](https://docs.fylr.io/) with Custom Data Type `Custom
 
 The Plugins uses <http://my-goobi.tld/api/processes/search> for the autocomplete-suggestions and additional informations about the goobi-processes.
 
+## installation
+
+The latest version of this plugin can be found [here](https://github.com/programmfabrik/fylr-plugin-custom-data-type-goobi/releases/latest/download/customDataTypeGoobi.zip).
+
+The ZIP can be downloaded and installed using the plugin manager, or used directly (recommended).
+
+Github has an overview page to get a list of [all releases](https://github.com/programmfabrik/fylr-plugin-custom-data-type-goobi/releases/).
+
+## requirements
+This plugin requires https://github.com/programmfabrik/fylr-plugin-commons-library. In order to use this Plugin, you need to add the [commons-library-plugin](https://github.com/programmfabrik/fylr-plugin-commons-library) to your pluginmanager.
+
 ## configuration
 
 As defined in `manifest.yml` this datatype can be configured:
