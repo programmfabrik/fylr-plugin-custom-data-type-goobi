@@ -1,5 +1,13 @@
 class CustomDataTypeGoobi extends CustomDataTypeWithCommonsAsPlugin
 
+  #######################################################################  
+  # return the prefix for localization for this data type.  
+  # Note: This function is supposed to be deprecated, but is still used   
+  # internally and has to be used here as a workaround because the   
+  # default generates tna.discovery  
+  getL10NPrefix: ->
+    'custom.data.type.goobi' 
+
   #######################################################################
   # return name of plugin
   getCustomDataTypeName: ->
