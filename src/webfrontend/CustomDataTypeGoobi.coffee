@@ -4,7 +4,7 @@ class CustomDataTypeGoobi extends CustomDataTypeWithCommonsAsPlugin
   # return the prefix for localization for this data type.  
   # Note: This function is supposed to be deprecated, but is still used   
   # internally and has to be used here as a workaround because the   
-  # default generates tna.discovery  
+  # default generates incorrect prefixes for camelCase class names 
   getL10NPrefix: ->
     'custom.data.type.goobi' 
 
@@ -147,8 +147,8 @@ class CustomDataTypeGoobi extends CustomDataTypeWithCommonsAsPlugin
 
         if goobi_searchterm.length == 0
             return
-        else
-          goobi_searchterms = goobi_searchterm.split(' ')
+        
+        goobi_searchterms = goobi_searchterm.split(' ')
 
         # run autocomplete-search via xhr
         if searchsuggest_xhr.xhr != undefined
@@ -280,8 +280,8 @@ class CustomDataTypeGoobi extends CustomDataTypeWithCommonsAsPlugin
     fields = [
       {
         type: CUI.Select
-        class: "commonPlugin_Select"
         undo_and_changed_support: false
+        class: "commonPlugin_Select"
         form:
             label: $$('custom.data.type.goobi.modal.form.text.count')
         options: [
@@ -382,8 +382,8 @@ class CustomDataTypeGoobi extends CustomDataTypeWithCommonsAsPlugin
   #######################################################################
   # zeige die gewählten Optionen im Datenmodell unter dem Button an
   getCustomDataOptionsInDatamodelInfo: (custom_settings) ->
-    @
     tags = []
+    
     if custom_settings.safeAsConceptName?.value
       tags.push "✓ Name: " + custom_settings.safeAsConceptName.value
     else
