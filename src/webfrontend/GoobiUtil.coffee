@@ -52,7 +52,7 @@ class GoobiUtil
       databaseLanguages = ez5.loca.getDatabaseLanguages()
 
     _standard = 
-      text:  object.aLabel
+      text:  object.conceptName
       l10ntext: {}
     
     l10nObject = {}
@@ -65,7 +65,7 @@ class GoobiUtil
     #  give l10n-languages the easydb-language-syntax
     for l10nObjectKey, l10nObjectValue of l10nObject
       # add to l10n
-      l10nObject[l10nObjectKey] = object.aLabel
+      l10nObject[l10nObjectKey] = object.conceptName
 
     _standard.l10ntext = l10nObject
 
@@ -90,11 +90,8 @@ class GoobiUtil
     # init l10nObject for fulltext
     for language in databaseLanguages
       l10nObject[language] = ''
-
     # preflabel to all languages
-    fullTextString += object.suggestLabel + ' ' + object.aLabel + ' ' + object.vLabel + ' '
-    # identifier to fulltext
-    fullTextString += object.token + ' '
+    fullTextString += object.conceptName
 
     for l10nObjectKey, l10nObjectValue of l10nObject
       l10nObject[l10nObjectKey] = fullTextString
