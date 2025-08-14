@@ -70,6 +70,7 @@ class CustomDataTypeGoobi extends CustomDataTypeWithCommonsAsPlugin
   __getAdditionalTooltipInfo: (uri, tooltip, extendedInfo_xhr) ->
 
     that = @
+    baseConfig = ez5.session.getBaseConfig("plugin", "custom-data-type-goobi").goobi_api
 
     #encodedURI = encodeURIComponent uri
 
@@ -78,15 +79,15 @@ class CustomDataTypeGoobi extends CustomDataTypeWithCommonsAsPlugin
       extendedInfo_xhr.xhr.abort()
 
     # start new request and download goobi-process-record via identifier / uri
-    goobi_endpoint_token = if that.getCustomMaskSettings().goobi_endpoint_token?.value then that.getCustomMaskSettings().goobi_endpoint_token?.value else ''
+    goobi_endpoint_token = if baseConfig.goobi_endpoint_token then baseConfig.goobi_endpoint_token else ''
     goobi_endpoint_token = encodeURIComponent(goobi_endpoint_token)
 
-    goobi_projects = if that.getCustomMaskSettings().projects?.value then that.getCustomMaskSettings().projects?.value else ''
+    goobi_projects = if baseConfig.projects then baseConfig.projects else ''
     goobi_projects = encodeURIComponent(goobi_projects)
 
-    goobi_api_url = if that.getCustomMaskSettings().goobi_api_url?.value then that.getCustomMaskSettings().goobi_api_url?.value else ''
+    goobi_api_url = if baseConfig.goobi_api_url then baseConfig.goobi_api_url else ''
 
-    url = goobi_api_url + '/processes/search?token=' + goobi_endpoint_token + '&field='+that.getCustomSchemaSettings().safeAsConceptURI?.value+'&offset=0&orderby=' + that.getCustomSchemaSettings().safeAsConceptURI?.value + '&descending=true&value=' + uri + '&limit=1&filterProjects=' + goobi_projects
+    url = goobi_api_url + '/processes/search?token=' + goobi_endpoint_token + '&field='+baseConfig.safeAsConceptURI+'&offset=0&orderby=' + baseConfig.safeAsConceptURI + '&descending=true&value=' + uri + '&limit=1&filterProjects=' + goobi_projects
     extendedInfo_xhr.xhr = new (CUI.XHR)(url: url)
     extendedInfo_xhr.xhr.start()
     .done((data, status, statusText) ->
@@ -126,19 +127,20 @@ class CustomDataTypeGoobi extends CustomDataTypeWithCommonsAsPlugin
     that = @
 
     delayMillisseconds = 200
-
+    
     setTimeout ( ->
 
-        safeAsConceptName = that.getCustomSchemaSettings().safeAsConceptName?.value
-        safeAsConceptURI = that.getCustomSchemaSettings().safeAsConceptURI?.value
+        baseConfig = ez5.session.getBaseConfig("plugin", "custom-data-type-goobi").goobi_api
+        safeAsConceptName = baseConfig.safeAsConceptName
+        safeAsConceptURI = baseConfig.safeAsConceptURI
 
         # as arthur says: https://gist.github.com/alisterlf/3490957#gistcomment-1405758
         #   and https://stackoverflow.com/questions/990904/remove-accents-diacritics-in-a-string-in-javascript#answer-37511463
 
         goobi_searchterm = searchstring.normalize('NFD').replace(/[\u0300-\u036f]/g, "")
         goobi_countSuggestions = 20
-        goobi_searchfield = that.getCustomMaskSettings().searchfields?.value.split(',')
-        goobi_projects_to_search = that.getCustomMaskSettings().projects?.value.split(',')
+        goobi_searchfield = baseConfig.searchfields.split(',')
+        goobi_projects_to_search = baseConfig.projects.split(',')
 
         if cdata_form
           goobi_searchterm = cdata_form.getFieldsByName("searchbarInput")[0].getValue()
@@ -163,6 +165,7 @@ class CustomDataTypeGoobi extends CustomDataTypeWithCommonsAsPlugin
 
         if ! Array.isArray(goobi_searchfield)
           goobi_searchfield = [goobi_searchfield]
+        
         for goobi_searchterm, key in goobi_searchterms
             filters = []
             for goobi_searchfield_entry, key in goobi_searchfield
@@ -186,13 +189,13 @@ class CustomDataTypeGoobi extends CustomDataTypeWithCommonsAsPlugin
 
         searchBody = JSON.stringify(searchBody)
 
-        goobi_endpoint_token = if that.getCustomMaskSettings().goobi_endpoint_token?.value then that.getCustomMaskSettings().goobi_endpoint_token?.value else ''
+        goobi_endpoint_token = if baseConfig.goobi_endpoint_token then baseConfig.goobi_endpoint_token else ''
         goobi_endpoint_token = encodeURIComponent(goobi_endpoint_token)
 
-        goobi_projects = if that.getCustomMaskSettings().projects?.value then that.getCustomMaskSettings().projects?.value else ''
+        goobi_projects = if baseConfig.projects then baseConfig.projects else ''
         goobi_projects = encodeURIComponent(goobi_projects)
 
-        goobi_api_url = if that.getCustomMaskSettings().goobi_api_url?.value then that.getCustomMaskSettings().goobi_api_url?.value else ''
+        goobi_api_url = if baseConfig.goobi_api_url then baseConfig.goobi_api_url else ''
 
         url = goobi_api_url + '/processes/search?token=' + goobi_endpoint_token
         searchsuggest_xhr.xhr = new (CUI.XHR)(
@@ -238,8 +241,10 @@ class CustomDataTypeGoobi extends CustomDataTypeWithCommonsAsPlugin
                   # lock in save data
                   cdata.conceptURI = btn.getOpt("value")
                   cdata.conceptName = btn.getText()
-                  console.error cdata
-                  console.error opts
+                  cdata._fulltext = GoobiUtil.getFullTextFromGoobiJSON cdata, false
+                  cdata._standard = GoobiUtil.getStandardFromGoobiJSON that, cdata, cdata, false
+                  # console.error cdata
+                  # console.error opts
                   # update the layout in form
                   that.__updateResult(cdata, layout, opts)
                   # hide suggest-menu
@@ -269,7 +274,8 @@ class CustomDataTypeGoobi extends CustomDataTypeWithCommonsAsPlugin
   __getEditorFields: (cdata) ->
     # read searchfields from datamodel
     searchOptions = []
-    searchfields = this.getCustomMaskSettings().searchfields?.value.split ','
+    baseConfig = ez5.session.getBaseConfig("plugin", "custom-data-type-goobi").goobi_api
+    searchfields = baseConfig.searchfields.split ','
     for searchfield, key in searchfields
       option=
         value: searchfield
@@ -377,23 +383,6 @@ class CustomDataTypeGoobi extends CustomDataTypeWithCommonsAsPlugin
             text: ""
       right: null
     .DOM
-
-
-  #######################################################################
-  # zeige die gewählten Optionen im Datenmodell unter dem Button an
-  getCustomDataOptionsInDatamodelInfo: (custom_settings) ->
-    tags = []
-    
-    if custom_settings.safeAsConceptName?.value
-      tags.push "✓ Name: " + custom_settings.safeAsConceptName.value
-    else
-      tags.push "✘ " + $$('custom.data.type.goobi.missing.config')
-
-    if custom_settings.safeAsConceptURI.value
-      tags.push "✓ URI: " + custom_settings.safeAsConceptURI.value
-    else
-      tags.push "✘ " + $$('custom.data.type.goobi.missing.config')
-    tags
 
 
 CustomDataType.register(CustomDataTypeGoobi)

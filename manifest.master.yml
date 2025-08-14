@@ -99,3 +99,24 @@ base_config:
         min: 0
         max: 23
         position: 2 
+  - name: goobi_api
+    group: api_custom_data_type
+    parameters:
+      goobi_api_url:
+        type: text
+        position: 0
+      goobi_endpoint_token:
+        type: text
+        position: 1
+      projects:
+        type: text
+        position: 2
+      searchfields:
+        type: text
+        position: 3
+      safeAsConceptName:
+        type: text
+        position: 4
+      safeAsConceptURI:
+        type: text
+        position: 5
