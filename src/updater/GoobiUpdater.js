@@ -161,7 +161,7 @@ main = (payload) => {
         payload.objects.forEach((result, index) => {
           let originalCdata = payload.objects[index].data;
 
-          let newCdata = {};
+          let newCdata = structuredClone(originalCdata);
           let originalURI = originalCdata.conceptURI;
 
           const matchingRecordData = results.find(record => record.uri === originalURI);
