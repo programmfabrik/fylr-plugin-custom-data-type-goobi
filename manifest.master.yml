@@ -27,32 +27,7 @@ custom_types:
       facetTerm:
         type: text_l10n
     config:
-      schema:
-        - name: safeAsConceptName
-          parameters:
-            value:
-              type: text
-        - name: safeAsConceptURI
-          parameters:
-            value:
-              type: text
       mask:
-        - name: goobi_api_url
-          parameters:
-            value:
-              type: text
-        - name: goobi_endpoint_token
-          parameters:
-            value:
-              type: text
-        - name: projects
-          parameters:
-            value:
-              type: text
-        - name: searchfields
-          parameters:
-            value:
-              type: text
         - name: editor_display
           parameters:
             value:

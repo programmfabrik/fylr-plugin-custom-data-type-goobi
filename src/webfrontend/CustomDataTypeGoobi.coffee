@@ -335,7 +335,6 @@ class CustomDataTypeGoobi extends CustomDataTypeWithCommonsAsPlugin
 
     fields
 
-
   #######################################################################
   # renders the "result" in original form (outside popover)
   __renderButtonByData: (cdata) ->
