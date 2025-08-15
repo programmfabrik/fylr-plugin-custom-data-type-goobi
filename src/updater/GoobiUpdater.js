@@ -62,8 +62,6 @@ function isInTimeRange(currentHour, fromHour, toHour) {
 }
 
 main = (payload) => {
-  console.error("main " + payload.action)
-  // console.error(JSON.stringify(payload))
 
   switch (payload.action) {
     case "start_update":
