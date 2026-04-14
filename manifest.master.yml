@@ -74,6 +74,11 @@ base_config:
         min: 0
         max: 23
         position: 2 
+      custom_expires_days:
+        type: int
+        min: 1
+        default: 1
+        position: 3
   - name: goobi_api
     group: api_custom_data_type
     parameters:
