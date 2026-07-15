@@ -6,15 +6,17 @@ plugin:
     de-DE: Goobi-Verknüpfung
     en-US: Goobi-Referencing
   info:
-    de-DE: Stellt Verknüpfungen mit Datensätzen aus goobi-Production her.
-    en-US: Provides links to the records from goobi-production.
+    de-DE: |
+      Ergänzt fylr um einen Feldtyp, mit dem sich Datensätze mit Vorgängen aus einem [Goobi-Workflow](https://www.intranda.com/digiverso/goobi/) (intranda) verknüpfen lassen. Redakteure durchsuchen die Goobi-Prozessdatenbank direkt im Maskenfeld und speichern einen Verweis auf den passenden Vorgang, sodass Digitalisierungs-Workflows mit den fylr-Datensätzen verbunden bleiben. Durchsuchbare Goobi-Projekte, Metadatenfelder und der API-Endpunkt sind konfigurierbar.
+    en-US: |
+      Adds a custom data type for linking records to processes in a [Goobi workflow](https://www.intranda.com/digiverso/goobi/) production system (intranda). Editors search the Goobi process database from a mask field and store a link to the matching process, keeping digitization workflows connected to your fylr records. The searchable Goobi projects and metadata fields, plus the API endpoint, are configurable.
   l10n: l10n/customDataTypeGoobi.csv
   webfrontend:
     url: customDataTypeGoobi.js
     css: customDataTypeGoobi.css
     dependencies:
       - commons-library
-    
+
 base_url_prefix: "webfrontend"
 
 custom_types:
@@ -73,7 +75,7 @@ base_config:
         default: 4
         min: 0
         max: 23
-        position: 2 
+        position: 2
       custom_expires_days:
         type: int
         min: 1
