@@ -11,18 +11,23 @@
 server:
   install:
   - l10n/customDataTypeGoobi.csv
+  # assembled server-side files, sources in the order written
+  bundles:
+    - out: updater/GoobiUpdater.js
+      sources:
+      - src/updater/GoobiUpdater.js
+      - webfrontend/GoobiUtil.coffee
 webfrontend:
-  coffee1:
-  - webfrontend/CustomDataTypeGoobi.coffee
-  - webfrontend/CustomDataTypeGoobiFacet.coffee
-  - webfrontend/GoobiUtil.coffee
+  # assembled into plugin.webfrontend.url, in this order:
+  # .coffee is compiled (CoffeeScript 1.x), .scss compiled,
+  # anything else taken verbatim
+  bundles:
+    - sources:
+        - webfrontend/CustomDataTypeGoobi.coffee
+        - webfrontend/CustomDataTypeGoobiFacet.coffee
+        - webfrontend/GoobiUtil.coffee
   install:
   - webfrontend/customDataTypeGoobi.css
-build:
-  bundles:
-  - out: updater/GoobiUpdater.js
-    sources:
-    - src/updater/GoobiUpdater.js
-    - webfrontend/GoobiUtil.coffee
-  zip_aliases:
-  - customDataTypeGoobi.zip
+
+zip_aliases:
+- customDataTypeGoobi.zip
